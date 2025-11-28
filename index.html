@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Email Subscription</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  :root{
+    --bg-1: #0f172a;            /* dark navy */
+    --bg-2: #0f3460;            /* deep blue */
+    --accent: #6c63ff;          /* accent */
+    --accent-2: #74ebd5;        /* secondary */
+    --card: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.06);
+    --muted: #cbd5e1;
+    --radius: 14px;
+    --transition: 220ms cubic-bezier(.2,.9,.3,1);
+  }
+
+  /* fonts + reset */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: #eef2ff;
+    background: radial-gradient(800px 500px at 10% 10%, rgba(116,235,213,0.06), transparent 8%),
+                linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+  }
+
+  /* layout */
+  .wrap{
+    width:100%;
+    max-width:980px;
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:28px;
+    align-items:center;
+  }
+
+  /* left hero */
+  .hero{
+    padding:34px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+  .brand {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .logo {
+    width:48px;
+    height:48px;
+    border-radius:10px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid;
+    place-items:center;
+    box-shadow: 0 6px 18px rgba(108,99,255,0.22);
+    font-weight:700;
+    color:#051024;
+  }
+  h1{ font-size:1.6rem; margin:0 0 8px 0; color: #fff; letter-spacing:-0.2px }
+  p.lead{ margin:0; color:var(--muted); line-height:1.5 }
+
+  /* small feature list */
+  .features {
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap:10px;
+    margin-top:20px;
+  }
+  .feature {
+    display:flex;
+    gap:10px;
+    align-items:center;
+    color:var(--muted);
+    font-size:0.95rem;
+  }
+  .dot {
+    width:10px; height:10px; border-radius:50%;
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    box-shadow:0 4px 10px rgba(116,235,213,0.08);
+  }
+
+  /* form card (right) */
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:var(--radius);
+    padding:26px;
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 12px 30px rgba(2,6,23,0.6);
+  }
+  .card h3 { margin:0 0 12px 0; color:#fff; font-size:1.1rem }
+  .sub { color:var(--muted); font-size:0.92rem; margin-bottom:16px }
+
+  form { display:grid; gap:12px; }
+  label { font-size:0.85rem; color:var(--muted); display:block; margin-bottom:6px }
+
+  .field {
+    position:relative;
+  }
+  input[type="text"],
+  input[type="email"],
+  select {
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.06);
+    background: rgba(10,16,34,0.55);
+    color:#fff;
+    outline:none;
+    transition: box-shadow var(--transition), transform var(--transition);
+  }
+  input::placeholder{ color: rgba(255,255,255,0.4) }
+  input:focus, select:focus{
+    box-shadow: 0 6px 20px rgba(108,99,255,0.12);
+    transform: translateY(-2px);
+    border-color: rgba(108,99,255,0.45);
+  }
+
+  /* checkbox row */
+  .checkboxes{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:6px;
+  }
+  .chk {
+    display:flex;
+    gap:10px;
+    align-items:center;
+    user-select:none;
+    color:var(--muted);
+  }
+  /* custom checkbox */
+  .chk input[type="checkbox"]{
+    appearance:none;
+    -webkit-appearance:none;
+    width:18px;height:18px;border-radius:5px;
+    border:1px solid rgba(255,255,255,0.08);
+    background:transparent;
+    position:relative;
+    outline:none;
+    cursor:pointer;
+    transition: all var(--transition);
+  }
+  .chk input[type="checkbox"]:checked{
+    background: linear-gradient(135deg,var(--accent),var(--accent-2));
+    border-color:transparent;
+    box-shadow:0 6px 16px rgba(108,99,255,0.16);
+  }
+  .chk input[type="checkbox"]:checked::after{
+    content:"✓";
+    color:#051024;
+    font-size:12px;
+    display:grid;
+    place-items:center;
+    position:absolute;
+    inset:0;
+  }
+
+  /* button */
+  .btn {
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border: none;
+    font-weight:600;
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#051024;
+    cursor:pointer;
+    box-shadow: 0 10px 30px rgba(108,99,255,0.16);
+    transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+  }
+  .btn:active{ transform:translateY(1px) }
+  .btn[disabled]{ opacity:0.7; cursor:wait; transform:none; box-shadow:none }
+
+  /* small helper row */
+  .row {
+    display:flex;
+    gap:8px;
+    align-items:center;
+    justify-content:space-between;
+    font-size:0.9rem;
+    color:var(--muted);
+  }
+
+  /* footer small */
+  .foot { margin-top:12px; font-size:0.82rem; color:rgba(255,255,255,0.6); text-align:center }
+
+  /* responsive */
+  @media (max-width:900px){
+    .wrap{ grid-template-columns: 1fr; }
+    .hero{ order:2 }
+    .card{ order:1 }
+  }
+</style>
+</head>
+<body>
+  <main class="wrap" role="main">
+    <section class="hero" aria-labelledby="app-title">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">ES</div>
+        <div>
+          <h1 id="app-title">Email Subscription</h1>
+          <p class="lead">Fast, unobtrusive subscriptions — stay updated with product news and offers.</p>
+        </div>
+      </div>
+
+      <div class="features" aria-hidden="false">
+        <div class="feature"><span class="dot" aria-hidden="true"></span>Easy one-click subscribe</div>
+        <div class="feature"><span class="dot" aria-hidden="true"></span>Privacy-first (no spam)</div>
+        <div class="feature"><span class="dot" aria-hidden="true"></span>Lightweight & responsive</div>
+        <div class="feature"><span class="dot" aria-hidden="true"></span>Server-side handling</div>
+      </div>
+
+      <p class="foot">We never share your email. Unsubscribe anytime.</p>
+    </section>
+
+    <aside class="card" aria-labelledby="form-title">
+      <h3 id="form-title">Join our list</h3>
+      <p class="sub">Enter your details and click <strong>Subscribe</strong>.</p>
+
+      <form id="subscribeForm" action="subscribe" method="post" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" placeholder="Jane Doe" autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label for="emailInput">Email address <span style="color:#f1f5f9">*</span></label>
+          <input id="emailInput" name="email" type="email" inputmode="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="field">
+          <label for="gender">Gender (optional)</label>
+          <select id="gender" name="gender" aria-label="Gender">
+            <option value="">Prefer not to say</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Interests</label>
+          <div class="checkboxes" role="group" aria-label="Interests">
+            <label class="chk"><input type="checkbox" name="interests[]" value="tech"> Tech & gadgets</label>
+            <label class="chk"><input type="checkbox" name="interests[]" value="fashion"> Fashion & lifestyle</label>
+            <label class="chk"><input type="checkbox" name="interests[]" value="news"> News & updates</label>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:8px;">
+          <div style="font-size:0.86rem; color:var(--muted)">By subscribing you agree to our terms.</div>
+          <div></div>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn" aria-live="polite">
+          <span id="btnText">Subscribe</span>
+          <span id="btnSpinner" style="display:none; margin-left:10px;">⏳</span>
+        </button>
+      </form>
+
+      <div id="message" role="status" aria-live="polite" style="display:none; margin-top:12px; color:var(--muted)"></div>
+    </aside>
+  </main>
+
+<script>
+  // Small JS: validate & show loading state before submit (so user sees immediate feedback)
+  (function(){
+    const form = document.getElementById('subscribeForm');
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const msg = document.getElementById('message');
+
+    form.addEventListener('submit', function(e){
+      // HTML5 will validate required fields automatically.
+      if (!form.checkValidity()) {
+        // Let browser show validation hints.
+        return;
+      }
+      // Show loading UI
+      btn.setAttribute('disabled', 'disabled');
+      btnText.textContent = 'Subscribing...';
+      btnSpinner.style.display = 'inline-block';
+
+      // Optionally show a small message (will be replaced by server response)
+      msg.style.display = 'block';
+      msg.textContent = 'Sending — please wait...';
+
+      // Allow the form to submit to the server (do not preventDefault)
+      // If you want to POST via AJAX, replace this with fetch() and prevent default.
+    });
+  })();
+</script>
+</body>
+</html>
